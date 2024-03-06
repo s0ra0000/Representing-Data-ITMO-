@@ -4,7 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7720ab04-48c7-426d-af0e-4896b153cf51" name="Changes" comment="" />
+    <list default="true" id="7720ab04-48c7-426d-af0e-4896b153cf51" name="Changes" comment="lab1">
+      <change afterPath="$PROJECT_DIR$/../lab/src/arrayList/ArrayList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/arrayList/Position.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/exceptions/InvalidPositionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/interfaces/IList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/linkedList/LinkedList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/linkedList/Node.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/linkedList/Position.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/utils/Data.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lab/src/utils/DuplicateRemover.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_ArrayList.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project_ArrayList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_LinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project_LinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_Remover.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Remover.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/lab1/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/lab1/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/lab1/arrayList/ArrayList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/lab1/arrayList/ArrayList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/lab1/linkedList/LinkedList$Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/lab1/linkedList/LinkedList$Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/lab1/linkedList/LinkedList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/lab1/linkedList/LinkedList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arrayList/ArrayList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/arrayList/ArrayList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/linkedList/LinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/linkedList/LinkedList.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,14 +40,25 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="s0ra &lt;d.bayasgalan1230@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "s0ra0000"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;s0ra0000&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -43,22 +75,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/dbaya/Documents/ITMO/5th Semester/Representing Data/lab1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "onboarding.tips.debug.path": "C:/Users/dbaya/Documents/ITMO/5th Semester/Представление данных/lab1/src/Main.java",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dbaya/Downloads/DataPresentation-main/DataPresentation-main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/dbaya/Documents/ITMO/5th Semester/Представление данных/lab1/src/Main.java&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -78,12 +111,46 @@
       <updated>1697192044422</updated>
       <workItem from="1697192045313" duration="4346000" />
       <workItem from="1697198473211" duration="7353000" />
-      <workItem from="1697265983299" duration="11440000" />
+      <workItem from="1697265983299" duration="22298000" />
+      <workItem from="1698176055290" duration="1343000" />
+      <workItem from="1699843587970" duration="814000" />
+      <workItem from="1699844855321" duration="1551000" />
+      <workItem from="1701032608254" duration="5979000" />
+      <workItem from="1702303912638" duration="1834000" />
     </task>
+    <task id="LOCAL-00001" summary="lab1">
+      <option name="closed" value="true" />
+      <created>1697485110044</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1697485110044</updated>
+    </task>
+    <task id="LOCAL-00002" summary="lab1">
+      <option name="closed" value="true" />
+      <created>1697485184917</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1697485184917</updated>
+    </task>
+    <task id="LOCAL-00003" summary="lab1">
+      <option name="closed" value="true" />
+      <created>1697485202584</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1697485202584</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="lab1" />
+    <option name="LAST_COMMIT_MESSAGE" value="lab1" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

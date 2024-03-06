@@ -25,7 +25,7 @@ public class ArrayList<T extends Comparable<T>> implements InterfaceList<T> {
     @Override
     public void insert(T x, int p) {
         //Проверяем, допустима ли позиция p.
-        //Сдвигаем все элементы, начиная с позиции p, на одну позицию вперед.
+        //Сдвигаем все элементы, начиная с позиции p, на одну позицию вперед с помощью метода shiftElementsForward().
         //Помещаем элемент x на позицию p - 1.
         //Увеличиваем last на 1.
     }
@@ -51,7 +51,7 @@ public class ArrayList<T extends Comparable<T>> implements InterfaceList<T> {
     @Override
     public void delete(int p) {
         //Проверяем допустимость позиции p.
-        //Сдвигаем все элементы после p на одну позицию назад.
+        //Сдвигаем все элементы после p на одну позицию назад с помощью метода shiftElementsBackward().
         //Обнуляем последний элемент.
         //Уменьшаем last на 1.
     }

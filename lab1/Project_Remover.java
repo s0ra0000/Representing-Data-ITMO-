@@ -2,7 +2,6 @@ package utils;
 
 import arrayList.ArrayList;
 import interfaces.InterfaceList;
-
 // Класс с обобщенным статическим методом удаления дубликатов из списка
 public class DuplicateRemover {
     // Обобщенный статический метод для удаления дубликатов
