@@ -5,6 +5,16 @@ import utils.Data; // Импорт класса Data
 
 // Объявление класса DoublyLinkedList, реализующего интерфейс IList
 public class List implements IList{
+    protected static class Node {
+        private final Data data; // Объявление переменной data, доступной публично, для хранения данных
+        private Node next; // Объявление переменной next для ссылки на следующий узел в списке
+        private Node prev;
+        public Node(Data data) { // Конструктор класса, принимающий объект данных
+            this.data = data; // Инициализация переменной data переданным объектом
+            this.next = null; // Инициализация переменной next как null, указывая, что следующего узла пока нет
+            this.prev = null;
+        }
+    }
     private Node head; // Объявление начального узла списка
     private Node tail; // Объявление конечного узла списка
 
@@ -22,35 +32,39 @@ public class List implements IList{
     @Override
     public void insert(Data x, Position p) {
         Node newNode = new Node(x); // Создание нового узла с данными x
-        if(head == null){ // Проверка, пустой ли список
-            head = newNode; // Назначение нового узла начальным
+        if(p.node==null){
+            // Обновление конечного узла списка
+            if(head == null){ // Проверка, пустой ли список
+                head = newNode; // Назначение нового узла начальным
+            }
+            else{
+                tail.next = newNode; // Связывание конечного узла с новым узлом
+                newNode.prev = tail; // Установка предыдущего узла для нового узла
+            }
             tail = newNode; // Назначение нового узла конечным
+            return;
         }
-        else if(p.node == head){ // Вставка перед начальным узлом
+        if(p.node == head){ // Вставка перед начальным узлом
             newNode.next = head; // Связывание нового узла со старым начальным узлом
             head.prev = newNode; // Установка предыдущего узла для старого начального узла
             head = newNode; // Обновление начального узла списка
+            return;
         }
-        else if(p.node == null){ // Вставка в конец списка
-            tail.next = newNode; // Связывание конечного узла с новым узлом
-            newNode.prev = tail; // Установка предыдущего узла для нового узла
-            tail = newNode; // Обновление конечного узла списка
+         // Вставка между узлами
+        Node current = head; // Начало поиска с начала списка
+        while(current != null && p.node != current){ // Поиск узла для вставки после него
+            current = current.next; // Переход к следующему узлу
         }
-        else{ // Вставка между узлами
-            Node current = head; // Начало поиска с начала списка
-            while(current != null && p.node != current){ // Поиск узла для вставки после него
-                current = current.next; // Переход к следующему узлу
-            }
-            if(current == null) { // Если узел не найден, вставляем в конец
-                tail.next = newNode;
-                newNode.prev = tail;
-                tail = newNode;
-            }
-            newNode.next = current; // Связывание нового узла с найденным
-            newNode.prev = current.prev; // Установка предыдущего узла для нового
-            current.prev.next = newNode; // Обновление следующего узла для предыдущего узла
-            current.prev = newNode; // Обновление предыдущего узла для найденного узла
+        if(current == null) { // Если узел не найден, вставляем в конец
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
         }
+        newNode.next = current; // Связывание нового узла с найденным
+        newNode.prev = current.prev; // Установка предыдущего узла для нового
+        current.prev.next = newNode; // Обновление следующего узла для предыдущего узла
+        current.prev = newNode; // Обновление предыдущего узла для найденного узла
+
     }
 
     @Override

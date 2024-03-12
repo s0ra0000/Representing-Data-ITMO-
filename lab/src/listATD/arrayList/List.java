@@ -6,7 +6,7 @@ import utils.Data; // Импорт класса Data из пакета utils
 
 public class List implements IList { // Объявление класса ArrayList, который реализует интерфейс IList
     private Data[] array = new Data[20]; // Объявление массива данных типа Data
-    private int size; // Объявление переменной для хранения размера списка
+    private int size; // Объявление переменной для хранения размера списка (последный занят)
 
     // Конструктор класса ArrayList, принимает начальную емкость списка
     public List() {
@@ -107,9 +107,6 @@ public class List implements IList { // Объявление класса ArrayL
 
     @Override
     public void makenull() {
-        for (int i = 0; i < size; i++) {
-            array[i] = null; // Очистить все элементы списка
-        }
         size = 0; // Установить размер списка в 0
     }
 

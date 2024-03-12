@@ -4,9 +4,9 @@ package listATD.doublyLinkedList;
 import java.util.Objects;
 
 public class Position {
-    public Node node;
+    public List.Node node;
 
-    public Position(Node node) { // Конструктор класса, принимает узел связанного списка
+    public Position(List.Node node) { // Конструктор класса, принимает узел связанного списка
         this.node = node; // Инициализация переменной node переданным узлом
     }
 

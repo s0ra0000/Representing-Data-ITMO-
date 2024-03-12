@@ -3,7 +3,7 @@ package listATD.cursorList;
 import java.util.Objects;
 
 public class Position {
-    private int index;
+    public int index;
     // Constructor
     public Position(int index) {// Конструктор класса, принимает индекс позиции
         this.index = index;    // Инициализация переменной index переданным значением

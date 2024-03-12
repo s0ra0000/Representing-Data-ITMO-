@@ -3,9 +3,9 @@ package listATD.linkedList;
 import java.util.Objects;
 
 public class Position {
-    public Node node; // Объявление публичной переменной node, которая ссылается на узел в связанном списке
+    public List.Node node; // Объявление публичной переменной node, которая ссылается на узел в связанном списке
 
-    public Position(Node node) { // Конструктор класса, принимает узел связанного списка
+    public Position(List.Node node) { // Конструктор класса, принимает узел связанного списка
         this.node = node; // Инициализация переменной node переданным узлом
     }
 

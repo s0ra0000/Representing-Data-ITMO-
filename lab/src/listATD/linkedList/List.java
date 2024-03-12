@@ -4,6 +4,15 @@ import exceptions.InvalidPositionException; // Импорт класса Invalid
 import utils.Data; // Импорт класса Data из пакета utils
 
 public class List implements IList{ // Определение класса LinkedList, реализующего интерфейс IList
+    protected static class Node {
+        private final Data data; // Объявление переменной data, доступной публично, для хранения данных
+        private Node next; // Объявление переменной next для ссылки на следующий узел в списке
+
+        public Node(Data data) { // Конструктор класса, принимающий объект данных
+            this.data = data; // Инициализация переменной data переданным объектом
+            this.next = null; // Инициализация переменной next как null, указывая, что следующего узла пока нет
+        }
+    }
     private Node head; // Приватное поле head, представляющее начальный элемент списка
 
     public List() {
@@ -18,34 +27,27 @@ public class List implements IList{ // Определение класса Linke
     @Override
     public void insert(Data x, Position p) {
         // Создание нового узла с данными x
-        Node newNode = new Node(x);
-
-        // Проверка, если список пуст, вставить новый узел в начало
-        if (head == null) {
-            head = newNode; // Установка нового узла в качестве головы списка
-            return;        // Возвращение из метода
-        }
 
         // Проверка, если позиция p не указана, вставить в конец списка
-        if (p == null || p.node == null) {
+        if (p.node == null) {
+            // Проверка, если список пуст, вставить новый узел в начало
+            Node newNode = new Node(x);
+            if (head == null) {
+                head = newNode; // Установка нового узла в качестве головы списка
+                return;        // Возвращение из метода
+            }
             Node last = getLast(); // Получение последнего узла списка
             last.next = newNode;   // Добавление нового узла в конец списка
             return;                // Возвращение из метода
         }
 
-        // Вставка в начало списка, если p.node является головой списка
-        if (p.node == head) {
-            newNode.next = head; // Новый узел указывает на текущую голову
-            head = newNode;      // Обновление головы списка на новый узел
-            return;              // Возвращение из метода
-        }
 
-        // Вставка в середину списка
+        // Вставка в список
         Position previous = getPrevious(p); // Получение узла, предшествующего p
         if (previous.node == null) {
             return; // Возвращение из метода, если предыдущий узел не найден (неверная позиция)
         }
-
+        Node newNode = new Node(x);
         // Вставка нового узла между предыдущим узлом и p.node
         newNode.next = p.node;          // Новый узел указывает на узел в позиции p
         previous.node.next = newNode;   // Предыдущий узел теперь указывает на новый узел
