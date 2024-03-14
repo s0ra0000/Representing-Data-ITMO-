@@ -2,9 +2,9 @@ package queueATD;
 
 import utils.Data;
 
-//import queueATD.array.*;
+import queueATD.array.*;
 //import queueATD.list.*;
-import queueATD.ringLinkedList.*;
+//import queueATD.ringLinkedList.*;
 
 public class Main {
     public static void main(String[] args){

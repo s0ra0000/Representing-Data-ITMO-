@@ -1,6 +1,6 @@
 package listATD.cursorList; // Объявление пакета listATD.arrayList.CursorList
 
-import exceptions.InvalidPositionException;
+import exceptions.InvalidException;
 import utils.Data; // Импорт класса Data из пакета utils
 
 public class List implements IList{ // Объявление класса listATD.cursorList, реализующего интерфейс IList
@@ -89,8 +89,8 @@ public class List implements IList{ // Объявление класса listATD
 
     @Override
     public Data retrieve(Position p) { // Метод для получения данных элемента по его позиции
-        if (p.getIndex() < 0 || p.getIndex() >= array.length) { // Проверка на корректность позиции
-            throw new InvalidPositionException("Invalid position"); // Выброс исключения при неверной позиции
+        if (p.getIndex() == FREE || p.getIndex() >= array.length) { // Проверка на корректность позиции
+            throw new InvalidException("Invalid position"); // Выброс исключения при неверной позиции
         }
         if(p.getIndex() == firstIndex) return array[firstIndex].data;
         return array[p.index].data; // Возврат данных элемента
@@ -98,7 +98,7 @@ public class List implements IList{ // Объявление класса listATD
 
     @Override
     public void delete(Position p) { // Метод для удаления элемента по позиции
-        if (p.getIndex() < 0 || p.getIndex() >= array.length) return; // Проверка на корректность позиции
+        if (firstIndex == FREE) return; // Проверка на корректность позиции
         int targetIndex = p.getIndex(); // Индекс удаляемого элемента
         if (p.getIndex() == firstIndex) { // Случай удаления первого элемента
             int temp = firstIndex; // Сохраняем индекс удаляемого элемента
@@ -122,8 +122,8 @@ public class List implements IList{ // Объявление класса listATD
 
     @Override
     public Position next(Position p) { // Метод для получения позиции следующего элемента
-        if (p.getIndex() < 0 || p.getIndex() >= array.length) { // Проверка на корректность позиции
-            throw new InvalidPositionException("Invalid position"); // Выброс исключения при неверной позиции
+        if (p.getIndex() == FREE || p.getIndex() >= array.length) { // Проверка на корректность позиции
+            throw new InvalidException("Invalid position"); // Выброс исключения при неверной позиции
         }
         if(p.index == firstIndex){
             return new Position(array[firstIndex].next);
@@ -133,21 +133,20 @@ public class List implements IList{ // Объявление класса listATD
 
     @Override
     public Position previous(Position p) { // Метод для получения позиции предыдущего элемента
-        if (p.getIndex() <= 0 || p.getIndex() > array.length) { // Проверка на корректность позиции
-            throw new InvalidPositionException("Position out of bounds"); // Выброс исключения при неверной позиции
+        if (p.getIndex() == FREE || p.getIndex() > array.length) { // Проверка на корректность позиции
+            throw new InvalidException("Position out of bounds"); // Выброс исключения при неверной позиции
         }
         int prev = findPrevious(p.index);
         return new Position(prev); // Возврат позиции предыдущего элемента
     }
 
-    //СОВСЕМ НЕ ПРАВИЛЬНООООО!!!!
+
     @Override
     public void makenull() { // Метод для очистки списка
-        for (int i = 0; i < capacity; i++) { // Проход по всем элементам массива
-            array[i].data = null; // Удаление данных узла
-            array[i].next = FREE; // Установка указателя на следующий элемент как FREE
-        }
-        firstIndex = FREE;
+        if(firstIndex == FREE) return;
+       array[findLast()].next= SPACE.index;
+       SPACE.index = firstIndex;
+       firstIndex = FREE;
     }
 
     @Override

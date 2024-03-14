@@ -1,72 +1,59 @@
 package mapATD.list;
 
-import exceptions.InvalidPositionException;
 import listATD.arrayList.List;
 import listATD.arrayList.Position;
 import utils.Data;
 
 public class Map {
-    private List mapList;
+    private final List list; // Объявление переменной для хранения списка
 
     public Map() {
-        this.mapList = new List();
+        this.list = new List(); // Конструктор создает новый список
     }
 
     public void makenull() {
-        this.mapList.makenull();
+        this.list.makenull(); // Метод очищает список
     }
 
     // Метод assign принимает адрес и имя в виде массивов символов
-    public void assign(char[] address, char[] name) {
-        Data newItem = new Data(address, name);
-        boolean found = false;
-        for (Position p = this.mapList.first(); !p.equals(this.mapList.end()); p = this.mapList.next(p)) {
-            try {
-                Data currentItem = this.mapList.retrieve(p);
-                if (java.util.Arrays.equals(currentItem.getAddress(), address)) {
-                    // Если нашли совпадение, заменяем элемент на новый
-                    this.mapList.delete(p); // Сначала удаляем старый
-                    this.mapList.insert(newItem, p); // Вставляем обновленный на ту же позицию
-                    found = true;
-                    break;
-                }
-            } catch (InvalidPositionException e) {
-                System.err.println("Invalid position encountered: " + e.getMessage());
-                // Обработка ошибки
-            }
+    public void assign(char[] name, char[] address) {
+        Data newData = new Data(address, name); // Создает новый объект данных с адресом и именем
+        if(list.first().equals(list.end())){
+            list.insert(newData,list.first()); // Если список пуст, вставляет данные в начало
+            return;
         }
-        if (!found) {
-            // Если совпадение не найдено, добавляем новый элемент в конец списка
-            this.mapList.insert(newItem, this.mapList.end());
+        Position p = findByName(name); // Находит позицию по имени
+        if(p.equals(list.end())){
+            list.insert(newData,list.first()); // Если имя не найдено, вставляет данные в начало списка
+        }
+        else {
+            list.retrieve(p).setAddress(address); // Если имя найдено, обновляет адрес у найденных данных
         }
     }
 
     // Метод compute возвращает true, если находит соответствие адреса, иначе false
-    public boolean compute(char[] address, char[] r) {
-        for (Position p = mapList.first(); !p.equals(mapList.end()); p = mapList.next(p)) {
-            try {
-                Data currentItem = mapList.retrieve(p);
-                if (new String(currentItem.getAddress()).trim().equals(new String(address).trim())) {
-                    System.arraycopy(currentItem.getName(), 0, r, 0, currentItem.getName().length);
-                    return true;
-                }
-            } catch (InvalidPositionException e) {
-                System.err.println("Invalid position encountered: " + e.getMessage());
-                return false;
-            }
+    public boolean compute(char[] address, char[] name) {
+        Position p = findByName(name); // Находит позицию по имени
+        if(!p.equals(list.end())) {
+            list.retrieve(p).setAddress(address); // Если имя найдено, обновляет адрес и возвращает true
+            return true;
         }
-        return false;
-    }
-    public void print() {
-        for (Position p = mapList.first(); !p.equals(mapList.end()); p = mapList.next(p)) {
-            try {
-                Data currentItem = mapList.retrieve(p);
-                System.out.println(new String(currentItem.getAddress()) + " -> " + new String(currentItem.getName()));
-            } catch (InvalidPositionException e) {
-                System.err.println("Error retrieving data: " + e.getMessage());
-            }
-        }
+        return false; // Возвращает false, если имя не найдено
     }
 
+    public Position findByName(char[] name){
+        Position p = list.first(); // Начинает поиск с первого элемента списка
+        while (!p.equals(list.end())) {
+            Data currentItem = list.retrieve(p); // Получает текущие данные для сравнения
+            if (java.util.Arrays.equals(currentItem.getName(), name)) {
+                return p; // Возвращает позицию, если имя найдено
+            }
+            p = list.next(p); // Переход к следующему элементу списка
+        }
+        return p; // Возвращает конец списка, если имя не найдено
+    }
+    public void print() {
+        list.printlist(); // Печатает все элементы списка
+    }
 
 }

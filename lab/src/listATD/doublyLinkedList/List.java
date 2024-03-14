@@ -1,12 +1,12 @@
 package listATD.doublyLinkedList; // Объявление пакета listATD.arrayList.doublyLinkedList
 
-import exceptions.InvalidPositionException; // Импорт класса исключения InvalidPositionException
+import exceptions.InvalidException; // Импорт класса исключения InvalidPositionException
 import utils.Data; // Импорт класса Data
 
 // Объявление класса DoublyLinkedList, реализующего интерфейс IList
 public class List implements IList{
     protected static class Node {
-        private final Data data; // Объявление переменной data, доступной публично, для хранения данных
+        private Data data; // Объявление переменной data, доступной публично, для хранения данных
         private Node next; // Объявление переменной next для ссылки на следующий узел в списке
         private Node prev;
         public Node(Data data) { // Конструктор класса, принимающий объект данных
@@ -31,41 +31,48 @@ public class List implements IList{
 
     @Override
     public void insert(Data x, Position p) {
-        Node newNode = new Node(x); // Создание нового узла с данными x
-        if(p.node==null){
-            // Обновление конечного узла списка
-            if(head == null){ // Проверка, пустой ли список
-                head = newNode; // Назначение нового узла начальным
+        // Проверяем, совпадают ли голова и хвост списка
+        if (head == tail) {
+            // Если список пуст, то создаем новый узел и делаем его головой и хвостом списка
+            if (head == null) {
+                head = new Node(x);
+                tail = head;
+                return;
             }
-            else{
-                tail.next = newNode; // Связывание конечного узла с новым узлом
-                newNode.prev = tail; // Установка предыдущего узла для нового узла
-            }
-            tail = newNode; // Назначение нового узла конечным
+            // Если в списке только один элемент, создаем новый узел после головы
+            head.next = new Node(head.data);
+            head.data = x; // Помещаем новые данные в голову
+            tail = head.next; // Обновляем хвост
+            tail.prev = head; // Устанавливаем предыдущий элемент для хвоста
             return;
         }
-        if(p.node == head){ // Вставка перед начальным узлом
-            newNode.next = head; // Связывание нового узла со старым начальным узлом
-            head.prev = newNode; // Установка предыдущего узла для старого начального узла
-            head = newNode; // Обновление начального узла списка
+        // Если позиция для вставки не определена, добавляем новый узел в конец списка
+        if(p.node == null) {
+            Node newNode = new Node(x);
+            tail.next = newNode; // Связываем старый хвост с новым узлом
+            newNode.prev = tail; // Устанавливаем предыдущий элемент для нового узла
+            tail = newNode; // Обновляем хвост
             return;
         }
-         // Вставка между узлами
-        Node current = head; // Начало поиска с начала списка
-        while(current != null && p.node != current){ // Поиск узла для вставки после него
-            current = current.next; // Переход к следующему узлу
+        Node current = head;
+        // Проходим по списку до нужной позиции или до конца списка
+        while(current != null && p.node != current){
+            current = current.next;
         }
-        if(current == null) { // Если узел не найден, вставляем в конец
-            tail.next = newNode;
-            newNode.prev = tail;
-            tail = newNode;
-        }
-        newNode.next = current; // Связывание нового узла с найденным
-        newNode.prev = current.prev; // Установка предыдущего узла для нового
-        current.prev.next = newNode; // Обновление следующего узла для предыдущего узла
-        current.prev = newNode; // Обновление предыдущего узла для найденного узла
+        // Если нужный узел не найден, выходим из метода
+        if(current != null) return;
+        Node tmp = p.node; // Сохраняем ссылку на узел, после которого нужно вставить новый элемент
+        Node next = tmp.next; // Сохраняем ссылку на следующий узел после "tmp"
+// Создаем новый узел с данными текущего узла "tmp" и вставляем его между "tmp" и "next"
+        tmp.next = new Node(tmp.data);
+        tmp.data = x; // Заменяем данные в узле "tmp" на новые данные "x"
+// Устанавливаем связь между новым узлом и узлом "next"
+        tmp.next.next = next; // Новый узел теперь указывает на "next"
+        tmp.next.prev = tmp; // Устанавливаем обратную связь от нового узла к "tmp"
+        if (next != null) next.prev = tmp.next; // Обновляем обратную связь у "next", если он не null, указывая на новый узел
 
     }
+
 
     @Override
     public Position locate(Data x) {
@@ -84,7 +91,7 @@ public class List implements IList{
         if (p != null && p.node != null) { // Если позиция валидна
             return p.node.data; // Возвращаем данные узла
         }
-        throw new InvalidPositionException("Invalid position"); // Возвращаем null, если позиция невалидна
+        throw new InvalidException("Invalid position"); // Возвращаем null, если позиция невалидна
     }
 
     @Override
@@ -118,7 +125,7 @@ public class List implements IList{
         if (p != null && p.node != null) { // Если позиция валидна
             return new Position(p.node.next); // Возвращаем позицию следующего узла
         }
-        throw new InvalidPositionException("Invalid position"); // Генерация исключения, если следующего узла нет
+        throw new InvalidException("Invalid position"); // Генерация исключения, если следующего узла нет
     }
 
     @Override
@@ -126,7 +133,7 @@ public class List implements IList{
         if (p != null && p.node != null && p.node.prev != null) { // Если позиция валидна и у узла есть предыдущий
             return new Position(p.node.prev); // Возвращаем позицию предыдущего узла
         }
-        throw new InvalidPositionException("Invalid position"); // Возвращаем null, если предыдущего узла нет
+        throw new InvalidException("Invalid position"); // Возвращаем null, если предыдущего узла нет
     }
 
     @Override

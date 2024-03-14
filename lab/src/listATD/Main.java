@@ -7,8 +7,8 @@ import utils.Data;
 
 
 //import listATD.arrayList.*;
-import listATD.linkedList.*;
-//import listATD.doublyLinkedList.*;
+//import listATD.linkedList.*;
+import listATD.doublyLinkedList.*;
 //import listATD.cursorList.*;
 
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class Main {
         Data data3 = new Data("Address3", "Element3");
 
         myList.insert(data1, myList.first());
-        myList.insert(data2, myList.end());
+        myList.insert(data2, myList.first());
         myList.insert(data3, myList.end());
         myList.insert(data1, myList.end());
         myList.insert(data2, myList.end());

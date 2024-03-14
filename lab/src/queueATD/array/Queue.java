@@ -1,53 +1,49 @@
-package queueATD.array;
+package queueATD.array; // Объявление пакета
 
-import utils.Data;
+import utils.Data; // Импорт класса Data из пакета utils
 
-import java.util.NoSuchElementException;
+import java.util.NoSuchElementException; // Импорт класса исключений для отсутствующего элемента
 
-public class Queue {
-    private final Data[] queue;
-    private int front = 0;
-    private int rear = -1;
-    private int size = 0;
-    private final int capacity = 10;
+public class Queue { // Объявление класса Queue
+    private final Data[] queue; // Массив для хранения элементов очереди
+    private int front = 0; // Индекс начала очереди
 
-    public Queue() {
-        this.queue = new Data[capacity];
+    private final int capacity = 10; // Емкость очереди
+    private int rear = capacity - 1; // Индекс конца очереди, инициализированный как емкость минус один
+
+    public Queue() { // Конструктор по умолчанию
+        this.queue = new Data[capacity]; // Инициализация массива для очереди с заданной емкостью
     }
 
-    public void makenull() {
-        front = 0;
-        rear = -1;
-        size = 0;
+    public void makenull() { // Метод для очистки очереди
+        front = 0; // Сброс индекса начала очереди
+        rear = capacity - 1; // Сброс индекса конца очереди
     }
 
-    public Data front() {
-        if (isEmpty()) throw new NoSuchElementException("Queue is empty");
-        return queue[front];
+    public Data front() { // Метод для получения элемента из начала очереди без его удаления
+        if (isEmpty()) throw new NoSuchElementException("Queue is empty"); // Если очередь пуста, бросается исключение
+        return queue[front]; // Возврат элемента на начале очереди
     }
 
-    public Data dequeue() {
-        if (isEmpty()) throw new NoSuchElementException("Queue is empty");
-        Data item = queue[front];
-        queue[front] = null; // Help GC
-        front = (front + 1) % capacity;
-        size--;
-        return item;
+    public Data dequeue() { // Метод для удаления и возвращения элемента из начала очереди
+        if (isEmpty()) throw new NoSuchElementException("Queue is empty"); // Если очередь пуста, бросается исключение
+        Data item = queue[front]; // Получение элемента на начале очереди
+        front = (front + 1) % capacity; // Обновление индекса начала очереди
+        return item; // Возврат удаленного элемента
     }
 
-    public void enqueue(Data item) {
-        if (isFull()) throw new IllegalStateException("Queue is full");
-        rear = (rear + 1) % capacity;
-        queue[rear] = item;
-        size++;
+    public void enqueue(Data item) { // Метод для добавления элемента в конец очереди
+        if (isFull()) throw new IllegalStateException("Queue is full"); // Если очередь полна, бросается исключение
+        rear = (rear + 1) % capacity; // Обновление индекса конца очереди
+        queue[rear] = item; // Добавление элемента в конец очереди
     }
 
-    public boolean isEmpty() {
-        return size == 0;
+    public boolean isEmpty() { // Метод для проверки, пуста ли очередь
+        return (rear + 1) % capacity == front; // Возвращает true, если очередь пуста
     }
 
-    public boolean isFull() {
-        return size == capacity;
+    public boolean isFull() { // Метод для проверки, полна ли очередь
+        return (rear + 2) % capacity == front; // Возвращает true, если очередь полна
     }
 
 }

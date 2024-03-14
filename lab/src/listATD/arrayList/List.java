@@ -1,7 +1,6 @@
 package listATD.arrayList; // Объявление пакета
 
-import exceptions.InvalidPositionException; // Импорт класса InvalidPositionException из пакета exceptions
-import listATD.arrayList.IList; // Импорт интерфейса IList из пакета listATD.arrayList.interfaces
+import exceptions.InvalidException; // Импорт класса InvalidPositionException из пакета exceptions
 import utils.Data; // Импорт класса Data из пакета utils
 
 public class List implements IList { // Объявление класса ArrayList, который реализует интерфейс IList
@@ -68,7 +67,7 @@ public class List implements IList { // Объявление класса ArrayL
             return array[index]; // Вернуть элемент списка по указанной позиции
         } else {
             // Позиция выходит за границы списка или является позицией после последнего элемента
-            throw new InvalidPositionException("Invalid position: " + p.getIndex());
+            throw new InvalidException("Invalid position: " + p.getIndex());
         }
     }
 
@@ -90,7 +89,7 @@ public class List implements IList { // Объявление класса ArrayL
         int index = p.getIndex();
         if (index < 1 || index > size) {
             // Позиция выходит за границы списка или является позицией после последнего элемента
-            throw new InvalidPositionException("Invalid position: " + index);
+            throw new InvalidException("Invalid position: " + index);
         }
         return new Position(index + 1); // Вернуть позицию следующего элемента
     }
@@ -100,7 +99,7 @@ public class List implements IList { // Объявление класса ArrayL
         int index = p.getIndex();
         if (index <= 1 || index > size + 1) {
             // Позиция - это первый элемент или выходит за границы списка
-            throw new InvalidPositionException("Invalid position: " + index);
+            throw new InvalidException("Invalid position: " + index);
         }
         return new Position(index - 1); // Вернуть позицию предыдущего элемента
     }

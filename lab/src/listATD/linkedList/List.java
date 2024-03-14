@@ -1,11 +1,11 @@
 package listATD.linkedList; // Объявление пакета
 
-import exceptions.InvalidPositionException; // Импорт класса InvalidPositionException из пакета exceptions
+import exceptions.InvalidException; // Импорт класса InvalidPositionException из пакета exceptions
 import utils.Data; // Импорт класса Data из пакета utils
 
 public class List implements IList{ // Определение класса LinkedList, реализующего интерфейс IList
     protected static class Node {
-        private final Data data; // Объявление переменной data, доступной публично, для хранения данных
+        private Data data; // Объявление переменной data, доступной публично, для хранения данных
         private Node next; // Объявление переменной next для ссылки на следующий узел в списке
 
         public Node(Data data) { // Конструктор класса, принимающий объект данных
@@ -26,32 +26,33 @@ public class List implements IList{ // Определение класса Linke
 
     @Override
     public void insert(Data x, Position p) {
-        // Создание нового узла с данными x
+        // Создание нового узла с данными x уже произошло в другом месте кода или его создание предполагается позже
 
-        // Проверка, если позиция p не указана, вставить в конец списка
+        // Проверка, если позиция p не указана (т.е., должен быть добавлен в конец списка)
         if (p.node == null) {
-            // Проверка, если список пуст, вставить новый узел в начало
-            Node newNode = new Node(x);
+            Node newNode = new Node(x); // Создание нового узла с данными x
             if (head == null) {
-                head = newNode; // Установка нового узла в качестве головы списка
-                return;        // Возвращение из метода
+                head = newNode; // Если список пуст, новый узел становится головой списка
+                return; // Выход из метода
             }
             Node last = getLast(); // Получение последнего узла списка
-            last.next = newNode;   // Добавление нового узла в конец списка
-            return;                // Возвращение из метода
+            last.next = newNode;   // Связывание последнего узла с новым, добавляя его в конец
+            return;                // Выход из метода
         }
 
-
-        // Вставка в список
-        Position previous = getPrevious(p); // Получение узла, предшествующего p
-        if (previous.node == null) {
-            return; // Возвращение из метода, если предыдущий узел не найден (неверная позиция)
+        // Вставка узла в указанную позицию (не в конец списка)
+        Position previous = getPrevious(p); // Попытка найти узел, предшествующий указанной позиции p
+        // Проверка на невозможность вставки: если не нашли предыдущего и p.node не является головой списка
+        if (previous.node == null && p.node != head) {
+            return; // Если предыдущий узел не найден и позиция не является началом списка, выходим из метода
         }
-        Node newNode = new Node(x);
-        // Вставка нового узла между предыдущим узлом и p.node
-        newNode.next = p.node;          // Новый узел указывает на узел в позиции p
-        previous.node.next = newNode;   // Предыдущий узел теперь указывает на новый узел
+        // Создание и вставка нового узла в список с сохранением порядка
+        Node tmp = p.node.next;              // Сохранение ссылки на следующий узел после p
+        p.node.next = new Node(p.node.data); // Создание нового узла с данными текущего узла p и вставка его после узла p
+        p.node.next.next = tmp;              // Установка связи вставленного узла со следующим узлом после p
+        p.node.data = x;                     // Замена данных в узле p на новые данные x
     }
+
 
 
     public Position first() {
@@ -86,7 +87,7 @@ public class List implements IList{ // Определение класса Linke
     public Data retrieve(Position p) {
         if (p == null || p.node == null) {
             // Позиция p равна END(L) или недопустима: выбросить исключение
-            throw new InvalidPositionException("Invalid position");
+            throw new InvalidException("Invalid position");
         }
         return p.node.data; // Вернуть данные элемента, на который указывает позиция p
     }
@@ -95,7 +96,7 @@ public class List implements IList{ // Определение класса Linke
     public Position next(Position p) {
         if (p == null || p.node == null) {
             // Позиция p не в списке или равна END(L): выбросить исключение
-            throw new InvalidPositionException("Invalid position");
+            throw new InvalidException("Invalid position");
         }
 
         if (p.node.next == null) {
@@ -111,13 +112,13 @@ public class List implements IList{ // Определение класса Linke
     public Position previous(Position p) {
         if (p == null || p.node == head) {
             // Позиция p - это первая позиция, END(L) или она не в списке: выбросить исключение
-            throw new InvalidPositionException("Invalid position");
+            throw new InvalidException("Invalid position");
         }
 
         Position previousPosition = getPrevious(p); // Получить позицию предыдущего элемента перед p
         if (previousPosition.node == null) {
             // Если предыдущая позиция равна null, это означает, что p - первая позиция или недопустима
-            throw new InvalidPositionException("Invalid position");
+            throw new InvalidException("Invalid position");
         }
         return previousPosition; // Вернуть позицию предыдущего элемента перед p
     }
