@@ -26,9 +26,7 @@ public class List implements IList{ // Определение класса Linke
 
     @Override
     public void insert(Data x, Position p) {
-        // Создание нового узла с данными x уже произошло в другом месте кода или его создание предполагается позже
-
-        // Проверка, если позиция p не указана (т.е., должен быть добавлен в конец списка)
+        // Проверка, если позиция p не указана
         if (p.node == null) {
             Node newNode = new Node(x); // Создание нового узла с данными x
             if (head == null) {
@@ -39,21 +37,27 @@ public class List implements IList{ // Определение класса Linke
             last.next = newNode;   // Связывание последнего узла с новым, добавляя его в конец
             return;                // Выход из метода
         }
+        if (p.node == head) {
+            Node newNode = new Node(head.data);
+            newNode.next = head.next;
+            head.next = newNode;
+            head.data = x;
+            return;
+        }
 
         // Вставка узла в указанную позицию (не в конец списка)
-        Position previous = getPrevious(p); // Попытка найти узел, предшествующий указанной позиции p
+        Node previous = getPrevious(p); // Попытка найти узел, предшествующий указанной позиции p
         // Проверка на невозможность вставки: если не нашли предыдущего и p.node не является головой списка
-        if (previous.node == null && p.node != head) {
+        if (previous == null) {
             return; // Если предыдущий узел не найден и позиция не является началом списка, выходим из метода
         }
+
         // Создание и вставка нового узла в список с сохранением порядка
         Node tmp = p.node.next;              // Сохранение ссылки на следующий узел после p
         p.node.next = new Node(p.node.data); // Создание нового узла с данными текущего узла p и вставка его после узла p
         p.node.next.next = tmp;              // Установка связи вставленного узла со следующим узлом после p
         p.node.data = x;                     // Замена данных в узле p на новые данные x
     }
-
-
 
     public Position first() {
         if (head == null) {
@@ -115,18 +119,18 @@ public class List implements IList{ // Определение класса Linke
             throw new InvalidException("Invalid position");
         }
 
-        Position previousPosition = getPrevious(p); // Получить позицию предыдущего элемента перед p
-        if (previousPosition.node == null) {
+        Node previousPosition = getPrevious(p); // Получить позицию предыдущего элемента перед p
+        if (previousPosition == null) {
             // Если предыдущая позиция равна null, это означает, что p - первая позиция или недопустима
             throw new InvalidException("Invalid position");
         }
-        return previousPosition; // Вернуть позицию предыдущего элемента перед p
+        return new Position(previousPosition); // Вернуть позицию предыдущего элемента перед p
     }
 
     @Override
     public void delete(Position p) {
         // Проверка на недопустимую позицию или END(L)
-        if (p == null || p.node == null || head == null) {
+        if (p.node == null || head == null) {
             return; // Ничего не делать, если позиция недопустима или равна END(L)
         }
 
@@ -137,12 +141,13 @@ public class List implements IList{ // Определение класса Linke
         }
 
         // Общий случай: удаление узла на позиции p
-        Position previousPosition = getPrevious(p); // Получить позицию предыдущего элемента перед p
-        if (previousPosition.node != null) {
-            Node nodeNext = previousPosition.node.next; // Следующий элемент после предыдущей позиции
-            previousPosition.node.next = nodeNext.next; // Пропустить удаляемый узел, связав предыдущий элемент с элементом, идущим после удаляемого
-            p.node = previousPosition.node.next; // Перейти к следующему узлу после удаления
-        }
+        Node previousPosition = getPrevious(p); // Получить позицию предыдущего элемента перед p
+        if(previousPosition == null) return;
+
+        previousPosition.next = p.node.next;
+        Node nodeNext = previousPosition.next; // Следующий элемент после предыдущей позиции
+        previousPosition.next = nodeNext.next; // Пропустить удаляемый узел, связав предыдущий элемент с элементом, идущим после удаляемого
+        p.node = previousPosition.next; // Перейти к следующему узлу после удаления
         // Ничего не делать, если previousPosition равен null (т. е. p не найдено)
     }
 
@@ -152,21 +157,26 @@ public class List implements IList{ // Определение класса Linke
 
     // Приватный метод getLast() для получения последнего элемента списка
     private Node getLast() {
-        Node current = head; // Начать с начального элемента списка
-        while (current.next != null) { // Пока не достигнут конец списка
+        Node current = head.next; // Начать с начального элемента списка
+        Node prev = head;
+        while (current != null) { // Пока не достигнут конец списка
+            prev = current;
             current = current.next; // Перейти к следующему элементу
         }
-        return current; // Вернуть последний элемент
+        return prev; // Вернуть последний элемент
     }
 
     // Приватный метод getPrevious(Position p) для получения позиции предыдущего элемента перед p
-    private Position getPrevious(Position p) {
-        if (p.node == head) return new Position(null); // Если p - это первый элемент, вернуть позицию с null-значением node
-
-        Node current = head; // Начать с начального элемента списка
-        while (current != null && current.next != p.node) {
+    private Node getPrevious(Position p) {
+        Node current = head.next; // Начать с начального элемента списка
+        Node prev = head;
+        while (current != null) {
+            if(current == p.node){
+                return prev;
+            }
+            prev = current;
             current = current.next; // Перейти к следующему элементу, пока не найдено p
         }
-        return new Position(current); // Вернуть позицию предыдущего элемента перед p
+        return null;
     }
 }

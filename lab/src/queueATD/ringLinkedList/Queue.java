@@ -33,7 +33,6 @@ public class Queue { // Объявление класса Queue
     }
 
     public Data dequeue() { // Метод для удаления и возвращения элемента из начала очереди
-        if (rear == null) throw new NoSuchElementException("Queue is empty"); // Если очередь пуста, выбрасывается исключение
         Node front = rear.next; // Получение узла, находящегося в начале очереди
         if (rear == front) { // Если в очереди всего один элемент
             rear = null; // Очистка очереди
@@ -44,7 +43,6 @@ public class Queue { // Объявление класса Queue
     }
 
     public Data front() { // Метод для получения элемента из начала очереди без его удаления
-        if (rear == null) throw new NoSuchElementException("Queue is empty"); // Если очередь пуста, выбрасывается исключение
         return rear.next.data; // Возврат данных элемента, находящегося в начале очереди
     }
 

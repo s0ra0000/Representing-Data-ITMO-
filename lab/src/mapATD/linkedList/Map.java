@@ -49,7 +49,7 @@ public class Map { // Объявление класса Map
     private Node findByName(char[] name) { // Вспомогательный метод для поиска узла по имени
         Node current = head; // Начало поиска с головы списка
         while (current != null) { // Пока не достигнут конец списка
-            if (java.util.Arrays.equals(current.data.getName(), name)) { // Если имена совпадают
+            if (compareCharArrays(current.data.getName(), name)) { // Если имена совпадают
                 return current; // Возвращаем найденный узел
             }
             current = current.next; // Переход к следующему узлу
@@ -60,9 +60,17 @@ public class Map { // Объявление класса Map
     public void print() { // Метод для вывода всех пар "адрес-имя"
         Node current = head; // Начало с головы списка
         while (current != null) { // Пока не достигнут конец списка
-            System.out.println(new String(current.data.getAddress()) + " -> " + new String(current.data.getName())); // Вывод пары "адрес-имя"
+            System.out.println(current.data);
             current = current.next; // Переход к следующему узлу
         }
+    }
+    private boolean compareCharArrays(char[] q1, char[] q2){
+        int len = Math.min(q1.length, q2.length);
+        for (int i = 0; i < len; i++){
+            if (q1[i] == '0' || q2[i] == '0') continue;
+            if (q1[i] != q2[i]) return false;
+        }
+        return true;
     }
 
 }

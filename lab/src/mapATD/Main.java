@@ -1,14 +1,18 @@
 package mapATD;
 
-//import mapATD.linkedList.*;
-import mapATD.list.*;
+import mapATD.linkedList.*;
+//import mapATD.list.*;
 
 public class Main {
     public static void main(String[] args){
-        System.out.println("Testing LinkedListMap");
         Map map = new Map();
-        map.assign("123 Street".toCharArray(), "Alice".toCharArray());
-        map.assign("456 Avenue".toCharArray(), "Bob".toCharArray());
+
+        map.assign("Name1".toCharArray(), "Address1".toCharArray());
+        map.assign("Name2".toCharArray(), "Address2".toCharArray());
+
+        map.assign("Name2".toCharArray(), "Address8".toCharArray());
+        System.out.println(map.compute("Address9".toCharArray(),"Name1".toCharArray()));
+
         map.print();
     }
 }

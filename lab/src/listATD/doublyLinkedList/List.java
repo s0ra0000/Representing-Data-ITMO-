@@ -28,45 +28,49 @@ public class List implements IList{
     public Position end() {
         return new Position(null); // Возвращает позицию, обозначающую конец списка
     }
-
+    //вставка единственное в голову
+    // в позицию хвоста
     @Override
     public void insert(Data x, Position p) {
-        // Проверяем, совпадают ли голова и хвост списка
-        if (head == tail) {
-            // Если список пуст, то создаем новый узел и делаем его головой и хвостом списка
+        // Если позиция для вставки не определена, добавляем новый узел в конец списка
+        if(p.node == null) {
             if (head == null) {
                 head = new Node(x);
                 tail = head;
                 return;
             }
-            // Если в списке только один элемент, создаем новый узел после головы
-            head.next = new Node(head.data);
-            head.data = x; // Помещаем новые данные в голову
-            tail = head.next; // Обновляем хвост
-            tail.prev = head; // Устанавливаем предыдущий элемент для хвоста
-            return;
-        }
-        // Если позиция для вставки не определена, добавляем новый узел в конец списка
-        if(p.node == null) {
+            // Проверяем, совпадают ли голова и хвост списка
             Node newNode = new Node(x);
             tail.next = newNode; // Связываем старый хвост с новым узлом
             newNode.prev = tail; // Устанавливаем предыдущий элемент для нового узла
             tail = newNode; // Обновляем хвост
             return;
         }
-        Node current = head;
-        // Проходим по списку до нужной позиции или до конца списка
-        while(current != null && p.node != current){
-            current = current.next;
+        if (head == tail && p.node==head) {
+            Node tmp = head;
+            head = new Node(x);
+            head.next = tmp;
+            tmp.prev = head;
+            return;
         }
-        // Если нужный узел не найден, выходим из метода
-        if(current != null) return;
+        if(head == tail && p.node == tail){
+            Node newNode = new Node(x);
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+            return;
+        }
+
+        // отдельный метод
+        if(!isPositionExist(p)){
+            return;
+        }
         Node tmp = p.node; // Сохраняем ссылку на узел, после которого нужно вставить новый элемент
         Node next = tmp.next; // Сохраняем ссылку на следующий узел после "tmp"
-// Создаем новый узел с данными текущего узла "tmp" и вставляем его между "tmp" и "next"
+        // Создаем новый узел с данными текущего узла "tmp" и вставляем его между "tmp" и "next"
         tmp.next = new Node(tmp.data);
         tmp.data = x; // Заменяем данные в узле "tmp" на новые данные "x"
-// Устанавливаем связь между новым узлом и узлом "next"
+        // Устанавливаем связь между новым узлом и узлом "next"
         tmp.next.next = next; // Новый узел теперь указывает на "next"
         tmp.next.prev = tmp; // Устанавливаем обратную связь от нового узла к "tmp"
         if (next != null) next.prev = tmp.next; // Обновляем обратную связь у "next", если он не null, указывая на новый узел
@@ -89,14 +93,21 @@ public class List implements IList{
     @Override
     public Data retrieve(Position p) {
         if (p != null && p.node != null) { // Если позиция валидна
-            return p.node.data; // Возвращаем данные узла
+            if(isPositionExist(p)){
+                return p.node.data; // Возвращаем данные узла
+            }
         }
         throw new InvalidException("Invalid position"); // Возвращаем null, если позиция невалидна
     }
-
+//удаление единственное
+    // Искать позицию везде!!!!!!!!!!!!
     @Override
     public void delete(Position p) {
-        if (p != null && p.node != null) { // Если позиция валидна
+        if (p.node != null) { // Если позиция валидна
+            if (head == tail && p.node == head) {
+                head = null;
+                tail = null;
+            }
             if (p.node == head) { // Удаление начального узла
                 head = head.next; // Обновление начального узла
                 if (head != null) {
@@ -109,21 +120,23 @@ public class List implements IList{
                 tail.next = null; // Обнуление ссылки на следующий узел для нового конечного узла
                 p.node = null; // Обнуление позиции
             }
-            else { // Удаление узла из середины списка
-                p.node.prev.next = p.node.next; // Обновление ссылки на следующий узел для предыдущего узла
-                if (p.node.next != null) {
-                    p.node.next.prev = p.node.prev; // Обновление ссылки на предыдущий узел для следующего узла
-                    p.node = p.node.prev.next; // Обновление позиции на следующий узел
-                }
-            }
 
+            // Искать позицию!!!!
+            if(!isPositionExist(p)) return;
+             // Удаление узла из середины списка
+
+            p.node.prev.next = p.node.next; // Обновление ссылки на следующий узел для предыдущего узла
+            p.node.next.prev = p.node.prev; // Обновление ссылки на предыдущий узел для следующего узла
+            p.node = p.node.prev.next; // Обновление позиции на следующий узел
         }
     }
 
     @Override
     public Position next(Position p) {
         if (p != null && p.node != null) { // Если позиция валидна
-            return new Position(p.node.next); // Возвращаем позицию следующего узла
+            if(p.node == head || isPositionExist(p)){
+                return new Position(p.node.next); // Возвращаем позицию следующего узла
+            }
         }
         throw new InvalidException("Invalid position"); // Генерация исключения, если следующего узла нет
     }
@@ -131,7 +144,10 @@ public class List implements IList{
     @Override
     public Position previous(Position p) {
         if (p != null && p.node != null && p.node.prev != null) { // Если позиция валидна и у узла есть предыдущий
-            return new Position(p.node.prev); // Возвращаем позицию предыдущего узла
+            if(p.node == tail || isPositionExist(p)){
+                return new Position(p.node.prev); // Возвращаем позицию предыдущего узла
+
+            }
         }
         throw new InvalidException("Invalid position"); // Возвращаем null, если предыдущего узла нет
     }
@@ -154,5 +170,16 @@ public class List implements IList{
             System.out.println(current.data); // Вывод данных текущего узла
             current = current.next; // Переход к следующему узлу
         }
+    }
+
+    private boolean isPositionExist(Position p){
+        Node curr = head;
+        while(curr!=null){
+            if(p.node == curr){
+                return true;
+            }
+            curr = curr.next;
+        }
+        return false;
     }
 }

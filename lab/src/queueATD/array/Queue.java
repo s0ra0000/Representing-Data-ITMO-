@@ -21,29 +21,27 @@ public class Queue { // Объявление класса Queue
     }
 
     public Data front() { // Метод для получения элемента из начала очереди без его удаления
-        if (isEmpty()) throw new NoSuchElementException("Queue is empty"); // Если очередь пуста, бросается исключение
         return queue[front]; // Возврат элемента на начале очереди
     }
 
     public Data dequeue() { // Метод для удаления и возвращения элемента из начала очереди
-        if (isEmpty()) throw new NoSuchElementException("Queue is empty"); // Если очередь пуста, бросается исключение
         Data item = queue[front]; // Получение элемента на начале очереди
-        front = (front + 1) % capacity; // Обновление индекса начала очереди
+        front = next(front); // Обновление индекса начала очереди
         return item; // Возврат удаленного элемента
     }
 
     public void enqueue(Data item) { // Метод для добавления элемента в конец очереди
-        if (isFull()) throw new IllegalStateException("Queue is full"); // Если очередь полна, бросается исключение
-        rear = (rear + 1) % capacity; // Обновление индекса конца очереди
+        rear = next(rear); // Обновление индекса конца очереди
         queue[rear] = item; // Добавление элемента в конец очереди
     }
 
     public boolean isEmpty() { // Метод для проверки, пуста ли очередь
-        return (rear + 1) % capacity == front; // Возвращает true, если очередь пуста
+        return next(rear) == front; // Возвращает true, если очередь пуста
     }
 
     public boolean isFull() { // Метод для проверки, полна ли очередь
-        return (rear + 2) % capacity == front; // Возвращает true, если очередь полна
+        return next(next(rear)) == front; // Возвращает true, если очередь полна
     }
+    private int next(int from) {return (from + 1) % capacity;}
 
 }

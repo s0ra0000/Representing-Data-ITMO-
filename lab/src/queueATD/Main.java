@@ -2,8 +2,8 @@ package queueATD;
 
 import utils.Data;
 
-import queueATD.array.*;
-//import queueATD.list.*;
+//import queueATD.array.*;
+import queueATD.list.*;
 //import queueATD.ringLinkedList.*;
 
 public class Main {
@@ -17,6 +17,9 @@ public class Main {
         queue.enqueue(data3);
 
         System.out.println("ArrayQueue Dequeue: " + queue.dequeue().toString());
-        System.out.println("ArrayQueue Front: " + queue.front().toString());
+        System.out.println("ArrayQueue Dequeue: " + queue.dequeue().toString());
+        System.out.println("ArrayQueue Dequeue: " + queue.dequeue().toString());
+
+
     }
 }

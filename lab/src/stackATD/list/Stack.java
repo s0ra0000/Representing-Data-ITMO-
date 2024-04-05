@@ -4,7 +4,7 @@ import listATD.arrayList.List; // Импорт класса List из пакет
 import utils.Data; // Импорт класса Data из пакета utils
 
 public class Stack { // Объявление класса Stack
-    private List list; // Объект списка, используемый для реализации стека
+    private final List list; // Объект списка, используемый для реализации стека
 
     public Stack() { // Конструктор по умолчанию
         list = new List(); // Инициализация списка
@@ -20,17 +20,12 @@ public class Stack { // Объявление класса Stack
     }
 
     public Data top() { // Метод для получения верхнего элемента стека без его удаления
-        if (isEmpty()) { // Проверка, пуст ли стек
-            throw new IllegalStateException("Stack is empty"); // Генерация исключения, если стек пуст
-        }
         // Возвращает элемент в начале списка, который является вершиной стека.
         return list.retrieve(list.first()); // Получение данных верхнего элемента
     }
 
     public Data pop() { // Метод для удаления и возвращения верхнего элемента стека
-        if (isEmpty()) { // Проверка, пуст ли стек
-            throw new IllegalStateException("Stack is empty"); // Генерация исключения, если стек пуст
-        }
+
         // Удаляет и возвращает элемент в начале списка, который является вершиной стека.
         Data topElement = list.retrieve(list.first()); // Получение верхнего элемента
         list.delete(list.first()); // Удаление верхнего элемента из списка

@@ -17,7 +17,7 @@ public class List implements IList{ // Объявление класса listATD
             this.data = null;
         }
     }
-    private Node[] array; // Массив для хранения узлов списка
+    private final Node[] array; // Массив для хранения узлов списка
     private int capacity = 50; // Общая вместимость списка
     private final int FREE = -1; // Константа для обозначения "свободного" индекса
     private final Position SPACE;
@@ -37,43 +37,43 @@ public class List implements IList{ // Объявление класса listATD
     }
 
     @Override
-    public void insert(Data x, Position p) { // Метод для вставки элемента в заданную позицию
-        if( p.getIndex() > array.length) return; // Проверка на неверную позицию
-        if (SPACE.index == FREE) return; // Если свободных индексов нет, прекратить выполнение
+    public void insert(Data x, Position p) { // Переопределенный метод для вставки элемента x в позицию p
+        // Если индекс позиции больше размера массива, выходим из метода
+        // Если нет свободного места (индекс SPACE указывает на FREE), выходим из метода
+
+        if(p == null || SPACE.index == FREE|| p.getIndex() > array.length) return;
+
+        // Если список пуст (firstIndex указывает на FREE)
         if (firstIndex == FREE) {
-            firstIndex = SPACE.index;
-            SPACE.index = array[firstIndex].next;
-            array[firstIndex] = new Node(x, FREE); // Предположим, что Node конструктор принимает Data и индекс следующего элемента
+            firstIndex = SPACE.index; // Устанавливаем firstIndex на первый свободный индекс
+            SPACE.index = array[firstIndex].next; // Обновляем индекс свободного места на следующий свободный индекс
+            array[firstIndex] = new Node(x, FREE); // Создаем новый узел на месте firstIndex
+            return;
+        }
 
-            return;
-        }
-        if (p.getIndex() == firstIndex) {
-            int newFirstIndex = SPACE.index;
-            SPACE.index = array[newFirstIndex].next;
-            array[newFirstIndex] = new Node(x, firstIndex);
-            firstIndex = newFirstIndex;
-            return;
-        }
+        // Если позиция вставки указывает на конец списка
         if (p.getIndex() == FREE || p.getIndex() == array.length) {
-            int last = firstIndex;
-            while (array[last].next != FREE) { // Ищем последний элемент
-                last = array[last].next;
-            }
-            int newIndex = SPACE.index;
-            SPACE.index = array[newIndex].next;
-            array[newIndex] = new Node(x, FREE);
-            array[last].next = newIndex; // Связываем последний элемент с новым
+            int last = findLast(); // Начинаем поиск с первого элемента
+            int newIndex = SPACE.index; // Запоминаем индекс для нового элемента
+            SPACE.index = array[newIndex].next; // Обновляем индекс свободного места
+            array[newIndex] = new Node(x, FREE); // Создаем новый узел в конце списка
+            array[last].next = newIndex; // Обновляем ссылку на следующий элемент последнего узла
             return;
         }
-        int prevIndex = findPrevious(p.getIndex());
-        if (prevIndex == FREE) return; // Если предыдущий элемент не найден
+        // Если позиция вставки не является первым элементом списка
+        if(p.getIndex() != firstIndex){
+            int prevIndex = findPrevious(p.getIndex()); // Ищем индекс предыдущего элемента для позиции вставки
+            if (prevIndex == FREE) return; // Если предыдущий элемент не найден, выходим из метода
+            array[prevIndex].next = SPACE.index; // Устанавливаем следующий элемент для предыдущего на первый свободный индекс
+        }
 
-        int newIndex = SPACE.index;
-        SPACE.index = array[newIndex].next;
-        array[newIndex] = new Node(x, array[prevIndex].next);
-        array[prevIndex].next = newIndex;
-
+        int tmp = SPACE.index; // Запоминаем временный индекс для нового узла
+        SPACE.index = array[tmp].next; // Обновляем индекс свободного места
+        array[tmp] = new Node(array[p.getIndex()].data, array[p.getIndex()].next); // Вставляем копию существующего узла в новое свободное место
+        array[p.getIndex()] = new Node(x,tmp); // Заменяем существующий узел на новый узел с данными x и указателем на копию
     }
+
+
 
     @Override
     public Position locate(Data x) { // Метод для поиска позиции элемента с заданными данными
@@ -98,7 +98,8 @@ public class List implements IList{ // Объявление класса listATD
 
     @Override
     public void delete(Position p) { // Метод для удаления элемента по позиции
-        if (firstIndex == FREE) return; // Проверка на корректность позиции
+        if (p == null ||firstIndex == FREE) return; // Проверка на корректность позиции
+
         int targetIndex = p.getIndex(); // Индекс удаляемого элемента
         if (p.getIndex() == firstIndex) { // Случай удаления первого элемента
             int temp = firstIndex; // Сохраняем индекс удаляемого элемента

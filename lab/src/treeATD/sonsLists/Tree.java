@@ -17,7 +17,7 @@ public class Tree { // Объявление класса дерева
 
     private static class Node { // Внутренний статический класс для узлов
         private final int name; // Идентификатор узла
-        private final Node next; // Ссылка на следующего брата
+        private final Node next;
 
         Node(int name, Node next) { // Конструктор Node
             this.name = name; // Инициализация идентификатора
@@ -25,7 +25,7 @@ public class Tree { // Объявление класса дерева
         }
     }
 
-    private static final int EMPTY = -1; // Константа для обозначения отсутствия элемента
+    public static final int EMPTY = -1; // Константа для обозначения отсутствия элемента
     private static final int SIZE = 10; // Размер массива узлов
     private static final ArrayNode[] array = new ArrayNode[SIZE]; // Массив узлов
     private int root = EMPTY; // Индекс корня дерева
@@ -39,22 +39,22 @@ public class Tree { // Объявление класса дерева
         freeIndex = 0; // Начало списка свободных элементов
     }
 
-    public int parent(int n) { // Метод поиска родителя узла
-        if (n == root || n == EMPTY || n >= SIZE) return EMPTY; // Проверка условий для корня и некорректных значений
-        return findParent(n, root); // Возвращение родителя узла
+    public int parent(int name) { // Метод поиска родителя узла
+        if (name == root || name == EMPTY || name >= SIZE) return EMPTY; // Проверка условий для корня и некорректных значений
+        return findParent(name, root); // Возвращение родителя узла
     }
 
-    public int leftMostChild(int n) { // Метод поиска самого левого потомка
-        if (n >= SIZE || array[n].firstChild == null) return EMPTY; // Проверка условий
-        return array[n].firstChild.name; // Возвращение самого левого потомка
+    public int leftMostChild(int name) { // Метод поиска самого левого потомка
+        if (root == EMPTY || name >= SIZE || array[name].firstChild == null) return EMPTY; // Проверка условий
+        return array[name].firstChild.name; // Возвращение самого левого потомка
     }
 
-    public int rightSibling(int n) { // Метод поиска правого сиблинга (брата)
-        if (n >= SIZE || n == root) return EMPTY; // Проверка условий
-        int parent = findParent(n, root); // Поиск родителя
+    public int rightSibling(int name) { // Метод поиска правого сиблинга (брата)
+        if (root == EMPTY || name >= SIZE || name == root) return EMPTY; // Проверка условий
+        int parent = findParent(name, root); // Поиск родителя
         if (parent == EMPTY) return EMPTY; // Если родитель не найден
         Node sibling = array[parent].firstChild; // Начало поиска сиблинга
-        while (sibling != null && sibling.name != n) { // Поиск узла в списке детей
+        while (sibling != null && sibling.name != name) { // Поиск узла в списке детей
             sibling = sibling.next; // Переход к следующему сиблингу
         }
         return (sibling != null && sibling.next != null) ? sibling.next.name : EMPTY; // Возврат правого сиблинга, если он существует
@@ -142,15 +142,4 @@ public class Tree { // Объявление класса дерева
         }
     }
 
-    public void inorderTraversal(int index) { // Метод обхода дерева
-        if (index < 0 || index >= SIZE || array[index].firstChild == null) { // Проверка условий
-            System.out.print(array[index].label.getValue() + " "); // Печать метки узла
-            return; // Возврат
-        }
-        inorderTraversal(array[index].firstChild.name); // Рекурсивный обход левых потомков
-        System.out.print(array[index].label.getValue() + " "); // Печать метки текущего узла
-        for (Node child = array[index].firstChild.next; child != null; child = child.next) { // Рекурсивный обход правых потомков
-            inorderTraversal(child.name); // Обход потомков
-        }
-    }
 }

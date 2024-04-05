@@ -4,6 +4,7 @@ import exceptions.InvalidException;
 import utils.Label;
 
 public class Tree {
+
     private static class Node{
         int name; // Номер узла
         int rightSibling; // Индекс правого сиблинга (брата)
@@ -20,7 +21,7 @@ public class Tree {
     private static final Node[] array; // Массив для хранения узлов дерева
     private static int freeIndex; // Индекс следующего свободного элемента в массиве
     private static final int SIZE = 10; // Размер массива
-    private final static int EMPTY = -1; // Константа для обозначения пустого значения
+    public final static int EMPTY = -1; // Константа для обозначения пустого значения
     private int rootIndex; // Индекс корня дерева
 
     static {
@@ -35,27 +36,29 @@ public class Tree {
     public Tree() { rootIndex = EMPTY; }; // Конструктор инициализирует дерево без узлов
 
     // Метод для нахождения родителя узла n
-    public int parent(int n) {
-        if (n == rootIndex || n == EMPTY || n >= SIZE) return EMPTY; // Корневой узел родителя не имеет
-        return findParent(n, rootIndex); // Вызов вспомогательного метода для поиска родителя
+    public int parent(int name) {
+        if (name == rootIndex || name == EMPTY || name >= SIZE) return EMPTY; // Корневой узел родителя не имеет
+        return findParent(name, rootIndex); // Вызов вспомогательного метода для поиска родителя
     }
     // Метод возвращает индекс левого самого ребенка узла n
-    public int leftMostChild(int n) {
-        if (n < 0 || n >= SIZE || array[n].leftSon == EMPTY) return EMPTY; // Проверка на существование левого сына
-        return array[n].leftSon;
+    public int leftMostChild(int name) {
+        if (rootIndex == EMPTY || name < 0 || name >= SIZE || array[name].leftSon == EMPTY) return EMPTY; // Проверка на существование левого сына
+        return array[name].leftSon;
     }
 
     // Метод возвращает индекс правого сиблинга (брата) узла n
-    public int rightSibling(int n) {
-        if (n < 0 || n >= SIZE || array[n].rightSibling == EMPTY) return EMPTY; // Проверка на существование правого сиблинга
-        return array[n].rightSibling;
+    public int rightSibling(int name) {
+        if (rootIndex == EMPTY || name < 0 || name >= SIZE || array[name].rightSibling == EMPTY) return EMPTY; // Проверка на существование правого сиблинга
+        int parent = findParent(name, rootIndex);
+        if(parent == EMPTY) return EMPTY;
+        return array[name].rightSibling;
     }
 
     // Метод возвращает метку узла n
-    public Label label(int n) {
-        if (n < 0 || n >= SIZE) throw new InvalidException("Out of bounds"); // Проверка на выход индекса за пределы массива
-        if (array[n].label == null) throw new InvalidException(" There is no label"); // Проверка на наличие метки
-        return array[n].label;
+    public Label label(int name) {
+        if (name < 0 || name >= SIZE) throw new InvalidException("Out of bounds"); // Проверка на выход индекса за пределы массива
+        if (array[name].label == null) throw new InvalidException(" There is no label"); // Проверка на наличие метки
+        return array[name].label;
     }
 
     // Метод создает новое дерево или добавляет узел с меткой label
@@ -107,7 +110,7 @@ public class Tree {
 
     // Вспомогательный метод для поиска родителя узла child
     private int findParent(int child, int parentCandidate) {
-        if (parentCandidate == EMPTY || child == EMPTY) return EMPTY; // Базовый случай
+       // if (parentCandidate == EMPTY || child == EMPTY) return EMPTY; // Базовый случай
         int currentChild = array[parentCandidate].leftSon;
         while (currentChild != EMPTY) {
             if (currentChild == child) return parentCandidate; // Найден родитель
@@ -120,15 +123,15 @@ public class Tree {
 
     // Метод для печати дерева
     public static void print() {
-        System.out.printf("%2s  %5s  %s  %n","LeftSon", "Label", "RightSibling");
+        System.out.printf("%2s  %5s  %s  %n","LMS", "Label", "RSL");
         for (int i = 0; i < SIZE - 1; i++) {
-            System.out.printf("%7d |%3c  | %7d %n",
+            System.out.printf("%4d |%3c  | %4d %n",
                     array[i].leftSon,
                     array[i].label.value,
                     array[i].rightSibling
             );
         }
-        System.out.printf("%7d |%3s  | %7d %n",
+        System.out.printf("%4d |%3s  | %4d %n",
                 array[SIZE - 1].leftSon,
                 " ", // Последний элемент массива для красивой печати
                 array[SIZE - 1].rightSibling
@@ -136,16 +139,4 @@ public class Tree {
         System.out.println();
     }
 
-    // Метод для обхода дерева в глубину и печати меток в порядке обхода
-    public void inorderTraversal(int index) {
-        if(index == EMPTY) return; // Если индекс пуст, завершаем выполнение
-        if(array[index].leftSon == EMPTY) {
-            System.out.print(array[index].label.value + " "); // Печать метки, если у узла нет левого сына
-        }
-        else {
-            inorderTraversal(array[index].leftSon); // Рекурсивный обход левого поддерева
-            System.out.print(array[index].label.value + " "); // Печать метки текущего узла
-            inorderTraversal(array[array[index].leftSon].rightSibling); // Рекурсивный обход правого поддерева
-        }
-    }
 }

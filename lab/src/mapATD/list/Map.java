@@ -17,17 +17,17 @@ public class Map {
 
     // Метод assign принимает адрес и имя в виде массивов символов
     public void assign(char[] name, char[] address) {
-        Data newData = new Data(address, name); // Создает новый объект данных с адресом и именем
         if(list.first().equals(list.end())){
-            list.insert(newData,list.first()); // Если список пуст, вставляет данные в начало
+            list.insert(new Data(address, name),list.first()); // Если список пуст, вставляет данные в начало
             return;
         }
         Position p = findByName(name); // Находит позицию по имени
         if(p.equals(list.end())){
-            list.insert(newData,list.first()); // Если имя не найдено, вставляет данные в начало списка
-        }
-        else {
+            list.insert(new Data(address, name),list.first()); // Если имя не найдено, вставляет данные в начало списка
+
+        }else{
             list.retrieve(p).setAddress(address); // Если имя найдено, обновляет адрес у найденных данных
+
         }
     }
 
@@ -45,7 +45,7 @@ public class Map {
         Position p = list.first(); // Начинает поиск с первого элемента списка
         while (!p.equals(list.end())) {
             Data currentItem = list.retrieve(p); // Получает текущие данные для сравнения
-            if (java.util.Arrays.equals(currentItem.getName(), name)) {
+            if (compareCharArrays(currentItem.getName(), name)) {
                 return p; // Возвращает позицию, если имя найдено
             }
             p = list.next(p); // Переход к следующему элементу списка
@@ -54,6 +54,14 @@ public class Map {
     }
     public void print() {
         list.printlist(); // Печатает все элементы списка
+    }
+    private boolean compareCharArrays(char[] q1, char[] q2){
+        int len = Math.min(q1.length, q2.length);
+        for (int i = 0; i < len; i++){
+            if (q1[i] == '0' || q2[i] == '0') continue;
+            if (q1[i] != q2[i]) return false;
+        }
+        return true;
     }
 
 }

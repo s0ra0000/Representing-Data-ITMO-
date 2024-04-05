@@ -9,9 +9,10 @@ public class Stack { // Объявление класса Stack
         Data data; // Данные, хранящиеся в узле
         Node next; // Ссылка на следующий узел в стеке
 
-        Node(Data data) { // Конструктор узла
+        //в параметре next
+        Node(Data data, Node next) { // Конструктор узла
             this.data = data; // Инициализация данных узла
-            this.next = null; // Инициализация следующего узла как null
+            this.next = next; // Инициализация следующего узла как null
         }
     }
 
@@ -24,25 +25,17 @@ public class Stack { // Объявление класса Stack
     }
 
     public Data top() { // Метод для получения данных с вершины стека без удаления
-        if (isEmpty()) { // Проверка, пуст ли стек
-            throw new IllegalStateException("Stack is empty"); // В случае пустого стека выбрасывается исключение
-        }
         return top.data; // Возвращение данных верхнего узла
     }
 
     public Data pop() { // Метод для удаления и возвращения данных с вершины стека
-        if (isEmpty()) { // Проверка, пуст ли стек
-            throw new IllegalStateException("Stack is empty"); // В случае пустого стека выбрасывается исключение
-        }
         Data data = top.data; // Сохранение данных верхнего узла
         top = top.next; // Сдвиг вершины стека на следующий узел
         return data; // Возвращение сохранённых данных
     }
 
     public void push(Data x) { // Метод для добавления данных на вершину стека
-        Node newNode = new Node(x); // Создание нового узла с данными
-        newNode.next = top; // Установка текущей вершины стека как следующего узла для нового узла
-        top = newNode; // Установка нового узла как вершины стека
+        top = new Node(x,top); // Создание нового узла с данными
     }
 
     public boolean isEmpty() { // Метод для проверки, пуст ли стек

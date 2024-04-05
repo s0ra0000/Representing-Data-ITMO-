@@ -4,7 +4,7 @@ import listATD.arrayList.List;
 import utils.Data;
 
 public class Queue {
-    private List list;
+    private final List list;
 
     public Queue() {
         list = new List();

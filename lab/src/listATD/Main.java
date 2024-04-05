@@ -8,8 +8,8 @@ import utils.Data;
 
 //import listATD.arrayList.*;
 //import listATD.linkedList.*;
-import listATD.doublyLinkedList.*;
-//import listATD.cursorList.*;
+//import listATD.doublyLinkedList.*;
+import listATD.cursorList.*;
 
 import java.util.Arrays;
 
@@ -18,18 +18,14 @@ public class Main {
          List myList = new List();
 
         Data data1 = new Data("Address1", "Element1");
-        Data data2 = new Data("Address2", "Element2");
-        Data data3 = new Data("Address3", "Element3");
 
         myList.insert(data1, myList.first());
-        myList.insert(data2, myList.first());
-        myList.insert(data3, myList.end());
         myList.insert(data1, myList.end());
-        myList.insert(data2, myList.end());
-        myList.insert(data3, myList.end());
-        myList.insert(data3, myList.end());
-        myList.insert(data3, myList.end());
-        myList.insert(data3, myList.end());
+        myList.insert(data1, myList.end());
+        myList.insert(data1, myList.end());
+        myList.insert(data1, myList.end());
+
+
 
         System.out.println("Список перед удалением:");
         myList.printlist();

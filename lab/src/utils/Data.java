@@ -22,10 +22,8 @@ public class Data{
     }
 
     public void setName(char[] name) {
-        if (name.length > this.name.length) {
-            this.name = Arrays.copyOf(name, this.name.length);
-        } else {
-            this.name = Arrays.copyOf(name, name.length);
+        for (int i = 0; i < name.length; i++){
+            this.name[i] = name[i];
         }
     }
 
@@ -34,10 +32,10 @@ public class Data{
     }
 
     public void setAddress(char[] address) {
-        if (address.length > this.address.length) {
-            this.address = Arrays.copyOf(address, this.address.length);
-        } else {
-            this.address = Arrays.copyOf(address, address.length);
+        // Сам копируй
+        for (int i = 0; i < address.length; i++){
+            this.address[i] = address[i];
+
         }
     }
 
@@ -46,8 +44,21 @@ public class Data{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Data data = (Data) o;
-        return Arrays.equals(name, data.name) && Arrays.equals(address, data.address);
+        if(data.getNameLength() != getNameLength() || data.getAddressLength() != getAddressLength()) {
+            return false;
+        }
+
+        for (int i = 0; i < getNameLength(); i++) {
+            System.out.println("haaha");
+            if (name[i] != data.name[i]) return false;
+        }
+
+        for (int i = 0; i < getAddressLength(); i++) {
+            if (address[i] != data.address[i]) return false;
+        }
+        return true;
     }
+
 
     @Override
     public int hashCode() {
@@ -58,9 +69,28 @@ public class Data{
 
     @Override
     public String toString() {
-        String valueString = new String(name); // Converts the character array to a string.
-        String addressString = new String(address); // Converts the character array to a string.
+        StringBuilder result = new StringBuilder();
+        result.append("name: ");
+        for (char c : name) {
+            if (c != 0) {
+                result.append(c);
+            }
+        }
+        result.append(" , address: ");
+        for (char c : address) {
+            if (c != 0) {
+                result.append(c);
+            }
+        }
 
-        return "name:" + valueString + ", address:" + addressString;
+        // Return the result as a string
+        return result.toString();
+    }
+
+    public int getNameLength() {
+        return name.length;
+    }
+    public int getAddressLength() {
+        return address.length;
     }
 }
